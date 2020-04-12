@@ -8,7 +8,7 @@ var cheerio = require("cheerio");
 var db = require("../models");
 
 //Create routes and logic within the routes
-// A GET route for scraping the statesman website
+// A GET route for scraping the website
 router.get("/scrape", function(req, res) {
     // First, we grab the body of the html with axios
     axios.get("https://www.echojs.com").then(function(response) {
@@ -19,8 +19,7 @@ router.get("/scrape", function(req, res) {
       $("article h2").each(function(i, element) {
         // Save an empty result object
         var result = {};
-  
-        // Add the text and href of every link, and save thes properties of the result object
+  // Add the text and href of every link, and save these properties of the result object
         result.title = $(this)
           .children("a")
           .text();
@@ -32,78 +31,28 @@ router.get("/scrape", function(req, res) {
         db.Article.create(result)
           .then(function(dbArticle) {
             // View the added result in the console
-            console.log(dbArticle);
+            //console.log(dbArticle);
           })
           .catch(function(err) {
-            // If an error occurred, log it
             console.log(err);
           });
       });
-  
-      // Send a message to the client
       res.send("Scrape Complete");
     });
   });
+  //Route to get all the articles from the database
   router.get("/", function(req, res) {
     // Grab every document in the Articles collection
     db.Article.find({}).limit(20)
       .then(function(dbArticle) {
         var hbsObject = {articles:dbArticle};
         res.render("index",hbsObject);
-      
       })
       .catch(function(err) {
-        // If an error occurred, send it to the client
         res.json(err);
       });
   });
-  router.get("/articlesSaved", function(req, res) {
-
-    db.Article.find({})
-    .then(function(savedData) {
-        // Save all saved article data into a handlebars object.
-        var hbsObject = {articles:savedData};
-        // console.log(hbsObject);
-        // Send all found saved articles as an object to be used in the handlebars receieving section of the index.
-        res.render("saved", hbsObject);
-    })
-    .catch(function(error) {
-        // If an error occurs, send the error to the client.
-        res.json(error);
-    });
-});
-  router.delete("/delete-articles", function(req, res, next){
-    db.Article.deleteMany({}, function(err){
-      if(err){
-        console.log(err)
-      }else{
-        console.log("Articles Deleted")
-      }
-    }).then(function(deleteNotes){
-      db.Note.deleteMany({},function(err){
-        if(err){
-          console.log(err)
-        }else{
-          console.log("Notes Deleted")
-        }
-      })
-    })
-  });
- // Route to save an Article.
-router.put("/saved/:id", function(req, res) {
-  // Update the article's boolean "saved" status to 'true.'
-  db.Article.update(
-      {_id: req.params.id},
-      {saved: true}
-  )
-  .then(function(result) {
-      res.json(result);
-  })
-  .catch(function(error) {
-      // If an error occurs, send the error to the client.
-      res.json(error);
-  });
-}); 
+ 
 /*router.get("/articles", function(req, res) {
     // Grab every document in the Articles collection
     db.Article.find({})

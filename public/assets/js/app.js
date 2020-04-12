@@ -23,26 +23,3 @@ $("#clear-button").on("click", function(){
     }
   });
 });
-$(".save-btn").on("click", function() {
-  // Keep the page from reloading.
-  event.preventDefault();
-  // Read data attribute from "save" button.
-  var id = $(this).data("id");
-
-  // Send the PUT request.
-  $.ajax({
-      url: "/saved/" + id,
-      type: "PUT",
-      success: function () {
-          // Show the 'save' success message in the modal,
-          $('#saveArticleModal').modal('show');
-      }
-  })
-  // then update the page when the modal is closed.
-  .then(function() {
-       console.log("Article has been saved");
-      $(".saveArticleCloseBtn").on("click", function() {
-          window.location.href = '/';
-      });
-  });
-});
