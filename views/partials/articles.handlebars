@@ -1,9 +1,6 @@
-{{#each articles}}{{#unless saved}}
+{{#each articles}}
 <div class="card">
     <div class="card-header bg-primary">
-        <div class="header-right">
-            <button type="button" class="btn save-btn btn-success" id="save-btn" data-id="{{_id}}">Save</button>
-        </div>
         <div class="header-left">
             <h3 class="articleTitle">{{title}}</h3>
         </div>
@@ -17,8 +14,11 @@
             <a href="{{link}}" target="_blank">
                 <p class="articleLink">{{link}}</p>
             </a>
-        </div>
+            <h5>Notes</h5>
+            <p class="noteArea">{{note}}</p>
+            <button class="addNote" data-id="{{_id}}">Add Note</button>
+            </div>
     </div>
 </div>
 <br>
-{{/unless}}{{/each}}
+{{/each}}
