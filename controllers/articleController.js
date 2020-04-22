@@ -69,16 +69,14 @@ router.get("/scrape", function(req, res) {
   
 // Route for saving an article's note
 router.post("/postnotes/:id", function(req, res) {
-  // Save the new note that gets posted to the Notes collection,
-  // then find an article from the req.params.id,
-  // and update it's "note" property with the _id of the new note.
   console.log(req.body);
   db.Note.create(req.body)
   .then(function(dbNote) {
       return db.Article.findOneAndUpdate(
           {_id: req.params.id},
           {notes: dbNote._id},
-          {new: true }
+          {new: true },
+          console.log("id " + dbNote)
       );
   })
   // respond with the article with the note included.
@@ -98,7 +96,7 @@ router.delete("/delete-articles", function(req, res, next) {
       if (err) {
           console.log(err)
       } else {
-          console.log("articles dropped!");
+          console.log("articles deleted");
       }
   })
   .then(function (dropnotes) {
@@ -106,7 +104,7 @@ router.delete("/delete-articles", function(req, res, next) {
           if (err) {
               console.log(err)
           } else {
-              console.log("notes dropped!");
+              console.log("notes deleted");
           }
       })
   })
