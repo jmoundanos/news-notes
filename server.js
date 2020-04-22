@@ -4,6 +4,8 @@ var mongoose = require("mongoose");
 const Handlebars = require('handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 const path = require('path');
+const port = process.env.PORT || 3000;
+const dotenv = require('dotenv').config();
 
 //var axios = require("axios");
 //var cheerio = require("cheerio");
@@ -11,7 +13,7 @@ const path = require('path');
 // Require all models
 var db = require("./models");
 
-var PORT = 3000;
+//var PORT = 3000;
 
 // Initialize Express
 var app = express();
@@ -39,10 +41,11 @@ app.set("view engine", "handlebars");
 var scrapeRoutes = require("./controllers/articleController.js");
 app.use(scrapeRoutes);
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/news-notes", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/news-notes", { useNewUrlParser: true });
 
   // Start the server
-app.listen(PORT, function() {
-    console.log("App running on port " + PORT + "!");
-  });
-  
+// app.listen(PORT, function() {
+//     console.log("App running on port " + PORT + "!");
+//   });
+
+app.listen(port);
